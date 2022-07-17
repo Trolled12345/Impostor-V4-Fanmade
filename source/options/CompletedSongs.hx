@@ -27,7 +27,9 @@ import Controls;
 
 using StringTools;
 
-class CompletedSongs extends BaseOptionsMenu //Why you are here?
+// Why you are here? -Merphi
+// Hehehehehehe -Saw
+class CompletedSongs extends BaseOptionsMenu
 {
 	public function new()
 	{
