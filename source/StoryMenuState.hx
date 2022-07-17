@@ -29,6 +29,7 @@ class StoryMenuState extends MusicBeatState
 	var scoreText:FlxText;
 
 	private static var lastDifficultyName:String = '';
+
 	var curDifficulty:Int = 1;
 
 	var txtWeekTitle:FlxText;
@@ -74,13 +75,13 @@ class StoryMenuState extends MusicBeatState
 			walking.screenCenter(Y);
 			walking.updateHitbox();
 			walking.x -= walking.width;
-			
+
 			walking.frames = tex;
 			walking.animation.addByPrefix('Walk', 'Walk', 24);
 			walking.animation.play('Walk');
 			add(walking);
 
-			FlxTween.tween(walking,{x: FlxG.width}, FlxG.random.int(10, 20));
+			FlxTween.tween(walking, {x: FlxG.width}, FlxG.random.int(10, 20));
 
 			amongTimer();
 		});
@@ -95,7 +96,8 @@ class StoryMenuState extends MusicBeatState
 
 		PlayState.isStoryMode = true;
 		WeekData.reloadWeekFiles(true);
-		if(curWeek >= WeekData.weeksList.length) curWeek = 0;
+		if (curWeek >= WeekData.weeksList.length)
+			curWeek = 0;
 		persistentUpdate = persistentDraw = true;
 
 		var bg:FlxSprite = new FlxSprite(-100).loadGraphic(Paths.image('spacep'));
@@ -188,7 +190,7 @@ class StoryMenuState extends MusicBeatState
 		{
 			var weekFile:WeekData = WeekData.weeksLoaded.get(WeekData.weeksList[i]);
 			var isLocked:Bool = weekIsLocked(WeekData.weeksList[i]);
-			if(!isLocked || !weekFile.hiddenUntilUnlocked)
+			if (!isLocked || !weekFile.hiddenUntilUnlocked)
 			{
 				loadedWeeks.push(weekFile);
 				WeekData.setDirectoryFromWeek(weekFile);
@@ -237,12 +239,12 @@ class StoryMenuState extends MusicBeatState
 		difficultySelectors.add(leftArrow);
 
 		CoolUtil.difficulties = CoolUtil.defaultDifficulties.copy();
-		if(lastDifficultyName == '')
+		if (lastDifficultyName == '')
 		{
 			lastDifficultyName = CoolUtil.defaultDifficulty;
 		}
 		curDifficulty = Math.round(Math.max(0, CoolUtil.defaultDifficulties.indexOf(lastDifficultyName)));
-		
+
 		sprDifficulty = new FlxSprite(0, leftArrow.y);
 		sprDifficulty.antialiasing = ClientPrefs.globalAntialiasing;
 		difficultySelectors.add(sprDifficulty);
@@ -281,7 +283,8 @@ class StoryMenuState extends MusicBeatState
 		super.create();
 	}
 
-	override function closeSubState() {
+	override function closeSubState()
+	{
 		persistentUpdate = true;
 		changeWeek();
 		super.closeSubState();
@@ -291,7 +294,8 @@ class StoryMenuState extends MusicBeatState
 	{
 		// scoreText.setFormat('VCR OSD Mono', 32);
 		lerpScore = Math.floor(FlxMath.lerp(lerpScore, intendedScore, CoolUtil.boundTo(elapsed * 30, 0, 1)));
-		if(Math.abs(intendedScore - lerpScore) < 10) lerpScore = intendedScore;
+		if (Math.abs(intendedScore - lerpScore) < 10)
+			lerpScore = intendedScore;
 
 		scoreText.text = "WEEK SCORE:" + lerpScore;
 
@@ -330,7 +334,7 @@ class StoryMenuState extends MusicBeatState
 			else if (upP || downP)
 				changeDifficulty();
 
-			if(FlxG.keys.justPressed.CONTROL #if android || virtualPad.buttonX.justPressed #end)
+			if (FlxG.keys.justPressed.CONTROL #if android || virtualPad.buttonX.justPressed #end)
 			{
 				#if android
 				removeVirtualPad();
@@ -338,14 +342,14 @@ class StoryMenuState extends MusicBeatState
 				persistentUpdate = false;
 				openSubState(new GameplayChangersSubstate());
 			}
-			else if(controls.RESET #if android || virtualPad.buttonY.justPressed #end)
+			else if (controls.RESET #if android || virtualPad.buttonY.justPressed #end)
 			{
 				#if android
 				removeVirtualPad();
 				#end
 				persistentUpdate = false;
 				openSubState(new ResetScoreSubState('', curDifficulty, '', curWeek));
-				//FlxG.sound.play(Paths.sound('scrollMenu'));
+				// FlxG.sound.play(Paths.sound('scrollMenu'));
 			}
 			else if (controls.ACCEPT)
 			{
@@ -381,7 +385,7 @@ class StoryMenuState extends MusicBeatState
 			{
 				FlxG.sound.play(Paths.sound('confirmMenu'));
 
-				switch(curWeek)
+				switch (curWeek)
 				{
 					case 0:
 						grpWeekText.members[curWeek].startFlashing(0xFF3E1D60);
@@ -402,14 +406,16 @@ class StoryMenuState extends MusicBeatState
 				}
 
 				var bf:MenuCharacter = grpWeekCharacters.members[1];
-				if(bf.character != '' && bf.hasConfirmAnimation) grpWeekCharacters.members[1].animation.play('confirm');
+				if (bf.character != '' && bf.hasConfirmAnimation)
+					grpWeekCharacters.members[1].animation.play('confirm');
 				stopspamming = true;
 			}
 
 			// We can't use Dynamic Array .copy() because that crashes HTML5, here's a workaround.
 			var songArray:Array<String> = [];
 			var leWeek:Array<Dynamic> = loadedWeeks[curWeek].songs;
-			for (i in 0...leWeek.length) {
+			for (i in 0...leWeek.length)
+			{
 				songArray.push(leWeek[i][0]);
 			}
 
@@ -419,7 +425,8 @@ class StoryMenuState extends MusicBeatState
 			selectedWeek = true;
 
 			var diffic = CoolUtil.getDifficultyFilePath(curDifficulty);
-			if(diffic == null) diffic = '';
+			if (diffic == null)
+				diffic = '';
 
 			PlayState.storyDifficulty = curDifficulty;
 
@@ -431,18 +438,21 @@ class StoryMenuState extends MusicBeatState
 				LoadingState.loadAndSwitchState(new PlayState(), true);
 				FreeplayState.destroyFreeplayVocals();
 			});
-		} else {
+		}
+		else
+		{
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 		}
 	}
 
 	var tweenDifficulty:FlxTween;
+
 	function changeDifficulty(change:Int = 0):Void
 	{
 		curDifficulty += change;
 
 		if (curDifficulty < 0)
-			curDifficulty = CoolUtil.difficulties.length-1;
+			curDifficulty = CoolUtil.difficulties.length - 1;
 		if (curDifficulty >= CoolUtil.difficulties.length)
 			curDifficulty = 0;
 
@@ -450,9 +460,9 @@ class StoryMenuState extends MusicBeatState
 
 		var diff:String = CoolUtil.difficulties[curDifficulty];
 		var newImage:FlxGraphic = Paths.image('menudifficulties/' + Paths.formatToSongPath(diff));
-		//trace(Paths.currentModDirectory + ', menudifficulties/' + Paths.formatToSongPath(diff));
+		// trace(Paths.currentModDirectory + ', menudifficulties/' + Paths.formatToSongPath(diff));
 
-		if(sprDifficulty.graphic != newImage)
+		if (sprDifficulty.graphic != newImage)
 		{
 			sprDifficulty.loadGraphic(newImage);
 			sprDifficulty.x = leftArrow.x + 60;
@@ -460,11 +470,14 @@ class StoryMenuState extends MusicBeatState
 			sprDifficulty.alpha = 0;
 			sprDifficulty.y = leftArrow.y - 15;
 
-			if(tweenDifficulty != null) tweenDifficulty.cancel();
-			tweenDifficulty = FlxTween.tween(sprDifficulty, {y: leftArrow.y + 15, alpha: 1}, 0.07, {onComplete: function(twn:FlxTween)
-			{
-				tweenDifficulty = null;
-			}});
+			if (tweenDifficulty != null)
+				tweenDifficulty.cancel();
+			tweenDifficulty = FlxTween.tween(sprDifficulty, {y: leftArrow.y + 15, alpha: 1}, 0.07, {
+				onComplete: function(twn:FlxTween)
+				{
+					tweenDifficulty = null;
+				}
+			});
 		}
 		lastDifficultyName = diff;
 
@@ -493,7 +506,7 @@ class StoryMenuState extends MusicBeatState
 		reactorTween.cancel();
 		ballerTween.cancel();
 		defeatTween.cancel();
-	}	
+	}
 
 	function changeWeek(change:Int = 0):Void
 	{
@@ -526,39 +539,44 @@ class StoryMenuState extends MusicBeatState
 
 		bgSprite.visible = true;
 		var assetName:String = leWeek.weekBackground;
-		if(assetName == null || assetName.length < 1) {
+		if (assetName == null || assetName.length < 1)
+		{
 			bgSprite.visible = false;
-		} else {
+		}
+		else
+		{
 			bgSprite.loadGraphic(Paths.image('menubackgrounds/menu_' + assetName));
 		}
 		PlayState.storyWeek = curWeek;
 
 		CoolUtil.difficulties = CoolUtil.defaultDifficulties.copy();
 		var diffStr:String = WeekData.getCurrentWeek().difficulties;
-		if(diffStr != null) diffStr = diffStr.trim(); //Fuck you HTML5
+		if (diffStr != null)
+			diffStr = diffStr.trim(); // Fuck you HTML5
 		difficultySelectors.visible = unlocked;
 
-		if(diffStr != null && diffStr.length > 0)
+		if (diffStr != null && diffStr.length > 0)
 		{
 			var diffs:Array<String> = diffStr.split(',');
 			var i:Int = diffs.length - 1;
 			while (i > 0)
 			{
-				if(diffs[i] != null)
+				if (diffs[i] != null)
 				{
 					diffs[i] = diffs[i].trim();
-					if(diffs[i].length < 1) diffs.remove(diffs[i]);
+					if (diffs[i].length < 1)
+						diffs.remove(diffs[i]);
 				}
 				--i;
 			}
 
-			if(diffs.length > 0 && diffs[0].length > 0)
+			if (diffs.length > 0 && diffs[0].length > 0)
 			{
 				CoolUtil.difficulties = diffs;
 			}
 		}
-		
-		if(CoolUtil.difficulties.contains(CoolUtil.defaultDifficulty))
+
+		if (CoolUtil.difficulties.contains(CoolUtil.defaultDifficulty))
 		{
 			curDifficulty = Math.round(Math.max(0, CoolUtil.defaultDifficulties.indexOf(CoolUtil.defaultDifficulty)));
 		}
@@ -568,151 +586,156 @@ class StoryMenuState extends MusicBeatState
 		}
 
 		var newPos:Int = CoolUtil.difficulties.indexOf(lastDifficultyName);
-		//trace('Pos of ' + lastDifficultyName + ' is ' + newPos);
-		if(newPos > -1)
+		// trace('Pos of ' + lastDifficultyName + ' is ' + newPos);
+		if (newPos > -1)
 		{
 			curDifficulty = newPos;
 		}
 		updateText();
-		
+
 		for (i in 0...grpWeekText.members.length)
-			{
-				if(i > curWeek) {
-					FlxTween.tween(grpWeekText.members[i], {alpha: 0.3}, 0.1, {ease: FlxEase.expoOut});
-				}
-				else if(i == curWeek) {
-					FlxTween.tween(grpWeekText.members[i], {alpha: 1}, 0.1, {ease: FlxEase.expoOut});
-				}
-				else if(i < curWeek) {
-					FlxTween.tween(grpWeekText.members[i], {alpha: 0}, 0.1, {ease: FlxEase.expoOut});
-				}
-			}
-			
-		switch(curWeek)
 		{
-			case 0: 
+			if (i > curWeek)
 			{
-				if(groundTween != null)
-				{
-					cancelTweens();
-				}
-				groundTween = FlxTween.tween(polusGround,{y: 169.29}, 0.5 ,{ease: FlxEase.expoOut});
-				hillsTween = FlxTween.tween(polusHills,{y: -126.38}, 0.6 ,{ease: FlxEase.expoOut});
-				rocksTween = FlxTween.tween(polusRocks,{y: -287.91}, 1 ,{ease: FlxEase.expoOut});
-				warehouseTween = FlxTween.tween(polusWarehouse,{y: -220.92}, 0.8 ,{ease: FlxEase.expoOut});
-				reactorTween = FlxTween.tween(reactor,{y: -400}, 0.6 ,{ease: FlxEase.expoIn});
-				ballerTween = FlxTween.tween(baller,{y: 100}, 0.8 ,{ease: FlxEase.expoIn});
-				defeatTween = FlxTween.tween(defeatScroll,{y: 937}, 3 ,{ease: FlxEase.expoOut});
-
-				effectTween = FlxTween.num(MosaicEffect.DEFAULT_STRENGTH, 15, 0.5, {type: ONESHOT}, function(v)
-				{
-					effect.setStrength(v, v);
-				});
-				FlxTween.tween(bgSky, {alpha: 0}, 0.4, {ease: FlxEase.expoIn});
-
+				FlxTween.tween(grpWeekText.members[i], {alpha: 0.3}, 0.1, {ease: FlxEase.expoOut});
 			}
+			else if (i == curWeek)
+			{
+				FlxTween.tween(grpWeekText.members[i], {alpha: 1}, 0.1, {ease: FlxEase.expoOut});
+			}
+			else if (i < curWeek)
+			{
+				FlxTween.tween(grpWeekText.members[i], {alpha: 0}, 0.1, {ease: FlxEase.expoOut});
+			}
+		}
+
+		switch (curWeek)
+		{
+			case 0:
+				{
+					if (groundTween != null)
+					{
+						cancelTweens();
+					}
+					groundTween = FlxTween.tween(polusGround, {y: 169.29}, 0.5, {ease: FlxEase.expoOut});
+					hillsTween = FlxTween.tween(polusHills, {y: -126.38}, 0.6, {ease: FlxEase.expoOut});
+					rocksTween = FlxTween.tween(polusRocks, {y: -287.91}, 1, {ease: FlxEase.expoOut});
+					warehouseTween = FlxTween.tween(polusWarehouse, {y: -220.92}, 0.8, {ease: FlxEase.expoOut});
+					reactorTween = FlxTween.tween(reactor, {y: -400}, 0.6, {ease: FlxEase.expoIn});
+					ballerTween = FlxTween.tween(baller, {y: 100}, 0.8, {ease: FlxEase.expoIn});
+					defeatTween = FlxTween.tween(defeatScroll, {y: 937}, 3, {ease: FlxEase.expoOut});
+
+					effectTween = FlxTween.num(MosaicEffect.DEFAULT_STRENGTH, 15, 0.5, {type: ONESHOT}, function(v)
+					{
+						effect.setStrength(v, v);
+					});
+					FlxTween.tween(bgSky, {alpha: 0}, 0.4, {ease: FlxEase.expoIn});
+				}
 			case 1:
-			{
-				if(groundTween != null)
 				{
+					if (groundTween != null)
+					{
 						cancelTweens();
+					}
+					groundTween = FlxTween.tween(polusGround, {y: 1169.29}, 0.5, {ease: FlxEase.expoIn});
+					hillsTween = FlxTween.tween(polusHills, {y: 873.62}, 0.6, {ease: FlxEase.expoIn});
+					rocksTween = FlxTween.tween(polusRocks, {y: 712.09}, 0.8, {ease: FlxEase.expoIn});
+					warehouseTween = FlxTween.tween(polusWarehouse, {y: 1220.92}, 0.7, {ease: FlxEase.expoIn});
+					reactorTween = FlxTween.tween(reactor, {y: -1400}, 0.6, {ease: FlxEase.expoOut});
+					ballerTween = FlxTween.tween(baller, {y: -900}, 0.8, {ease: FlxEase.expoOut});
+					defeatTween = FlxTween.tween(defeatScroll, {y: 937}, 3, {ease: FlxEase.expoOut});
+
+					effectTween = FlxTween.num(MosaicEffect.DEFAULT_STRENGTH, 15, 0.5, {type: ONESHOT}, function(v)
+					{
+						effect.setStrength(v, v);
+					});
+					FlxTween.tween(bgSky, {alpha: 0}, 0.4, {ease: FlxEase.expoIn});
+
+					var currentNuts:Int = 0; // i love testicle among s!
 				}
-				groundTween = FlxTween.tween(polusGround,{y: 1169.29}, 0.5 ,{ease: FlxEase.expoIn});
-				hillsTween = FlxTween.tween(polusHills,{y: 873.62}, 0.6 ,{ease: FlxEase.expoIn});
-				rocksTween = FlxTween.tween(polusRocks,{y: 712.09}, 0.8 ,{ease: FlxEase.expoIn});
-				warehouseTween = FlxTween.tween(polusWarehouse,{y: 1220.92}, 0.7 ,{ease: FlxEase.expoIn});
-				reactorTween = FlxTween.tween(reactor,{y: -1400}, 0.6 ,{ease: FlxEase.expoOut});
-				ballerTween = FlxTween.tween(baller,{y: -900}, 0.8 ,{ease: FlxEase.expoOut});
-				defeatTween = FlxTween.tween(defeatScroll,{y: 937}, 3 ,{ease: FlxEase.expoOut});
-
-				effectTween = FlxTween.num(MosaicEffect.DEFAULT_STRENGTH, 15, 0.5, {type: ONESHOT}, function(v)
-				{
-					effect.setStrength(v, v);
-				});
-				FlxTween.tween(bgSky, {alpha: 0}, 0.4, {ease: FlxEase.expoIn});
-
-				var currentNuts:Int = 0; // i love testicle among s!
-
-			}
 			case 2:
-			{
-				if(groundTween != null)
 				{
+					if (groundTween != null)
+					{
 						cancelTweens();
-				}
-				groundTween = FlxTween.tween(polusGround,{y: 1169.29}, 0.5 ,{ease: FlxEase.expoIn});
-				hillsTween = FlxTween.tween(polusHills,{y: 873.62}, 0.6 ,{ease: FlxEase.expoIn});
-				rocksTween = FlxTween.tween(polusRocks,{y: 712.09}, 0.8 ,{ease: FlxEase.expoIn});
-				warehouseTween = FlxTween.tween(polusWarehouse,{y: 1220.92}, 0.7 ,{ease: FlxEase.expoIn});
-				reactorTween = FlxTween.tween(reactor,{y: -400}, 0.6 ,{ease: FlxEase.expoIn});
-				ballerTween = FlxTween.tween(baller,{y: 100}, 0.8 ,{ease: FlxEase.expoIn});
-				defeatTween = FlxTween.tween(defeatScroll,{y: 937}, 3 ,{ease: FlxEase.expoOut});
+					}
+					groundTween = FlxTween.tween(polusGround, {y: 1169.29}, 0.5, {ease: FlxEase.expoIn});
+					hillsTween = FlxTween.tween(polusHills, {y: 873.62}, 0.6, {ease: FlxEase.expoIn});
+					rocksTween = FlxTween.tween(polusRocks, {y: 712.09}, 0.8, {ease: FlxEase.expoIn});
+					warehouseTween = FlxTween.tween(polusWarehouse, {y: 1220.92}, 0.7, {ease: FlxEase.expoIn});
+					reactorTween = FlxTween.tween(reactor, {y: -400}, 0.6, {ease: FlxEase.expoIn});
+					ballerTween = FlxTween.tween(baller, {y: 100}, 0.8, {ease: FlxEase.expoIn});
+					defeatTween = FlxTween.tween(defeatScroll, {y: 937}, 3, {ease: FlxEase.expoOut});
 
-				effectTween = FlxTween.num(15, MosaicEffect.DEFAULT_STRENGTH, 0.5, {type: ONESHOT}, function(v)
-				{
-					effect.setStrength(v, v);
-				});
-				FlxTween.tween(bgSky, {alpha: 1}, 0.4, {ease: FlxEase.expoOut});
-				
-			}
+					effectTween = FlxTween.num(15, MosaicEffect.DEFAULT_STRENGTH, 0.5, {type: ONESHOT}, function(v)
+					{
+						effect.setStrength(v, v);
+					});
+					FlxTween.tween(bgSky, {alpha: 1}, 0.4, {ease: FlxEase.expoOut});
+				}
 			case 3:
-			{
-				if(groundTween != null)
 				{
+					if (groundTween != null)
+					{
 						cancelTweens();
-				}
-				groundTween = FlxTween.tween(polusGround,{y: 1169.29}, 0.5 ,{ease: FlxEase.expoIn});
-				hillsTween = FlxTween.tween(polusHills,{y: 873.62}, 0.6 ,{ease: FlxEase.expoIn});
-				rocksTween = FlxTween.tween(polusRocks,{y: 712.09}, 0.8 ,{ease: FlxEase.expoIn});
-				warehouseTween = FlxTween.tween(polusWarehouse,{y: 1220.92}, 0.7 ,{ease: FlxEase.expoIn});
-				reactorTween = FlxTween.tween(reactor,{y: -400}, 0.6 ,{ease: FlxEase.expoIn});
-				ballerTween = FlxTween.tween(baller,{y: 100}, 0.8 ,{ease: FlxEase.expoIn});
-				defeatTween = FlxTween.tween(defeatScroll,{y: -2050}, 3 ,{ease: FlxEase.expoOut});
+					}
+					groundTween = FlxTween.tween(polusGround, {y: 1169.29}, 0.5, {ease: FlxEase.expoIn});
+					hillsTween = FlxTween.tween(polusHills, {y: 873.62}, 0.6, {ease: FlxEase.expoIn});
+					rocksTween = FlxTween.tween(polusRocks, {y: 712.09}, 0.8, {ease: FlxEase.expoIn});
+					warehouseTween = FlxTween.tween(polusWarehouse, {y: 1220.92}, 0.7, {ease: FlxEase.expoIn});
+					reactorTween = FlxTween.tween(reactor, {y: -400}, 0.6, {ease: FlxEase.expoIn});
+					ballerTween = FlxTween.tween(baller, {y: 100}, 0.8, {ease: FlxEase.expoIn});
+					defeatTween = FlxTween.tween(defeatScroll, {y: -2050}, 3, {ease: FlxEase.expoOut});
 
-				effectTween = FlxTween.num(MosaicEffect.DEFAULT_STRENGTH, 15, 0.5, {type: ONESHOT}, function(v)
-				{
-					effect.setStrength(v, v);
-				});
-				FlxTween.tween(bgSky, {alpha: 0}, 0.4, {ease: FlxEase.expoIn});
-			}
+					effectTween = FlxTween.num(MosaicEffect.DEFAULT_STRENGTH, 15, 0.5, {type: ONESHOT}, function(v)
+					{
+						effect.setStrength(v, v);
+					});
+					FlxTween.tween(bgSky, {alpha: 0}, 0.4, {ease: FlxEase.expoIn});
+				}
 			case 4 | 5 | 6 | 7:
-			{
-				if(groundTween != null)
 				{
+					if (groundTween != null)
+					{
 						cancelTweens();
-				}
-				groundTween = FlxTween.tween(polusGround,{y: 1169.29}, 0.5 ,{ease: FlxEase.expoIn});
-				hillsTween = FlxTween.tween(polusHills,{y: 873.62}, 0.6 ,{ease: FlxEase.expoIn});
-				rocksTween = FlxTween.tween(polusRocks,{y: 712.09}, 0.8 ,{ease: FlxEase.expoIn});
-				warehouseTween = FlxTween.tween(polusWarehouse,{y: 1220.92}, 0.7 ,{ease: FlxEase.expoIn});
-				reactorTween = FlxTween.tween(reactor,{y: -400}, 0.6 ,{ease: FlxEase.expoIn});
-				ballerTween = FlxTween.tween(baller,{y: 100}, 0.8 ,{ease: FlxEase.expoIn});
-				defeatTween = FlxTween.tween(defeatScroll,{y: 937}, 3 ,{ease: FlxEase.expoOut});
+					}
+					groundTween = FlxTween.tween(polusGround, {y: 1169.29}, 0.5, {ease: FlxEase.expoIn});
+					hillsTween = FlxTween.tween(polusHills, {y: 873.62}, 0.6, {ease: FlxEase.expoIn});
+					rocksTween = FlxTween.tween(polusRocks, {y: 712.09}, 0.8, {ease: FlxEase.expoIn});
+					warehouseTween = FlxTween.tween(polusWarehouse, {y: 1220.92}, 0.7, {ease: FlxEase.expoIn});
+					reactorTween = FlxTween.tween(reactor, {y: -400}, 0.6, {ease: FlxEase.expoIn});
+					ballerTween = FlxTween.tween(baller, {y: 100}, 0.8, {ease: FlxEase.expoIn});
+					defeatTween = FlxTween.tween(defeatScroll, {y: 937}, 3, {ease: FlxEase.expoOut});
 
-				effectTween = FlxTween.num(MosaicEffect.DEFAULT_STRENGTH, 15, 0.5, {type: ONESHOT}, function(v)
-				{
-					effect.setStrength(v, v);
-				});
-				FlxTween.tween(bgSky, {alpha: 0}, 0.4, {ease: FlxEase.expoIn});
-			}
+					effectTween = FlxTween.num(MosaicEffect.DEFAULT_STRENGTH, 15, 0.5, {type: ONESHOT}, function(v)
+					{
+						effect.setStrength(v, v);
+					});
+					FlxTween.tween(bgSky, {alpha: 0}, 0.4, {ease: FlxEase.expoIn});
+				}
 		}
 	}
 
-	function weekIsLocked(name:String):Bool {
+	function weekIsLocked(name:String):Bool
+	{
 		var leWeek:WeekData = WeekData.weeksLoaded.get(name);
-		return (!leWeek.startUnlocked && leWeek.weekBefore.length > 0 && (!weekCompleted.exists(leWeek.weekBefore) || !weekCompleted.get(leWeek.weekBefore)));
+		return (!leWeek.startUnlocked
+			&& leWeek.weekBefore.length > 0
+			&& (!weekCompleted.exists(leWeek.weekBefore) || !weekCompleted.get(leWeek.weekBefore)));
 	}
 
 	function updateText()
 	{
 		var weekArray:Array<String> = loadedWeeks[curWeek].weekCharacters;
-		for (i in 0...grpWeekCharacters.length) {
+		for (i in 0...grpWeekCharacters.length)
+		{
 			grpWeekCharacters.members[i].changeCharacter(weekArray[i]);
 		}
 
 		var leWeek:WeekData = loadedWeeks[curWeek];
 		var stringThing:Array<String> = [];
-		for (i in 0...leWeek.songs.length) {
+		for (i in 0...leWeek.songs.length)
+		{
 			stringThing.push(leWeek.songs[i][0]);
 		}
 

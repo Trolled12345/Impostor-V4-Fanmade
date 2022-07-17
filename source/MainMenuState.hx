@@ -27,20 +27,15 @@ using StringTools;
 
 class MainMenuState extends MusicBeatState
 {
-	public static var psychEngineVersion:String = '0.5.2'; //This is also used for Discord RPC
+	public static var psychEngineVersion:String = '0.5.2'; // This is also used for Discord RPC
+
 	public var curSelected:Int = 0;
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
 	private var camGame:FlxCamera;
 	private var camAchievement:FlxCamera;
-	
-	var optionShit:Array<String> = [
-		'story',
-		'freeplay',
-		'options',
-		'awards',
-		'discord'
-	];
+
+	var optionShit:Array<String> = ['story', 'freeplay', 'options', 'awards', 'discord'];
 
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
@@ -55,6 +50,9 @@ class MainMenuState extends MusicBeatState
 
 	override function create()
 	{
+		Paths.clearStoredMemory();
+		Paths.clearUnusedMemory();
+
 		WeekData.loadTheFirstEnabledMod();
 
 		#if desktop
@@ -122,12 +120,13 @@ class MainMenuState extends MusicBeatState
 		vignette.updateHitbox();
 		vignette.active = false;
 		vignette.scrollFactor.set();
-		add(vignette);	
+		add(vignette);
 
 		menuItems = new FlxTypedGroup<FlxSprite>();
 		add(menuItems);
 
-		for(i in 0...optionShit.length) {
+		for (i in 0...optionShit.length)
+		{
 			var testButton:FlxSprite = new FlxSprite(0, 130);
 			testButton.ID = i;
 			testButton.frames = Paths.getSparrowAtlas('menu/ButtonSheet');
@@ -138,7 +137,8 @@ class MainMenuState extends MusicBeatState
 			testButton.updateHitbox();
 			testButton.screenCenter(X);
 			testButton.scrollFactor.set();
-			switch(i) {
+			switch (i)
+			{
 				case 0:
 					testButton.setPosition(357.5, 379.9);
 				case 1:
@@ -151,7 +151,7 @@ class MainMenuState extends MusicBeatState
 					testButton.setPosition(745.5, 513.3);
 			}
 			menuItems.add(testButton);
-		}		
+		}
 
 		var logo:FlxSprite = new FlxSprite(0, 100);
 		logo.frames = Paths.getSparrowAtlas('logoBumpin2');
@@ -169,13 +169,13 @@ class MainMenuState extends MusicBeatState
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		versionShit.screenCenter(X);
 		add(versionShit);
-		
+
 		var versionShit:FlxText = new FlxText(5, FlxG.height - 65, 900, "If you wan't use my fanmade for your mod, just add my nickname in credits.");
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		versionShit.screenCenter(X);
 		add(versionShit);
-		
+
 		var versionShit:FlxText = new FlxText(5, FlxG.height - 50, 1300, "Big thanks to Betrayal developers, Hershey, Uhard, HopKa, Lenya The Cat, Sirox,
 		LEOAQUIBOT, murkedGuyyr, Sotopia, VanDaniel, Flopster, Nes, FNF Fan, Fran, GrishaAsd, 
 		Bravu, AlexZockt, Jigsaw, Agente TV, Adam_02M5, ConcreteDayShow, Arievix, DeepFriedBolonese and TerraRune.");
@@ -183,13 +183,13 @@ class MainMenuState extends MusicBeatState
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		versionShit.screenCenter(X);
 		add(versionShit);
-		
+
 		var versionShit:FlxText = new FlxText(5, FlxG.height - 95, 900, "V.S. Impostor v4 - Fanmade (1.2) by: Merphi");
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		versionShit.screenCenter(X);
 		add(versionShit);
-		
+
 		changeItem();
 
 		#if android
@@ -218,7 +218,8 @@ class MainMenuState extends MusicBeatState
 		});
 		if (!selectedSomethin)
 		{
-			if (curSelected == 0) {
+			if (curSelected == 0)
+			{
 				if (controls.UI_RIGHT_P)
 				{
 					new FlxTimer().start(0.05, function(tmr:FlxTimer)
@@ -238,7 +239,8 @@ class MainMenuState extends MusicBeatState
 				}
 			}
 
-			if (curSelected == 1) {
+			if (curSelected == 1)
+			{
 				if (controls.UI_LEFT_P)
 				{
 					new FlxTimer().start(0.05, function(tmr:FlxTimer)
@@ -258,7 +260,8 @@ class MainMenuState extends MusicBeatState
 				}
 			}
 
-			if (curSelected == 2) {
+			if (curSelected == 2)
+			{
 				if (controls.UI_RIGHT_P)
 				{
 					new FlxTimer().start(0.05, function(tmr:FlxTimer)
@@ -267,7 +270,7 @@ class MainMenuState extends MusicBeatState
 						changeItem(1);
 					});
 				}
-				
+
 				if (controls.UI_UP_P)
 				{
 					new FlxTimer().start(0.05, function(tmr:FlxTimer)
@@ -277,8 +280,9 @@ class MainMenuState extends MusicBeatState
 					});
 				}
 			}
-			
-			if (curSelected == 3) {
+
+			if (curSelected == 3)
+			{
 				if (controls.UI_LEFT_P)
 				{
 					new FlxTimer().start(0.05, function(tmr:FlxTimer)
@@ -298,7 +302,8 @@ class MainMenuState extends MusicBeatState
 				}
 			}
 
-			if (curSelected == 4) {
+			if (curSelected == 4)
+			{
 				if (controls.UI_LEFT_P)
 				{
 					new FlxTimer().start(0.05, function(tmr:FlxTimer)
@@ -327,12 +332,12 @@ class MainMenuState extends MusicBeatState
 
 			if (controls.ACCEPT)
 			{
-					if (optionShit[curSelected] == 'discord')
-					{
-						CoolUtil.browserLoad('https://discord.gg/pY54h9wq7q');
-					}
-					else
-					{
+				if (optionShit[curSelected] == 'discord')
+				{
+					CoolUtil.browserLoad('https://discord.gg/pY54h9wq7q');
+				}
+				else
+				{
 					selectedSomethin = true;
 					FlxG.sound.play(Paths.sound('confirmMenu'));
 
@@ -340,29 +345,29 @@ class MainMenuState extends MusicBeatState
 					{
 						if (curSelected != spr.ID)
 						{
-						FlxTween.tween(starFG, {y: 500}, 0.7, {
-							ease: FlxEase.quadInOut
-						});
-						FlxTween.tween(starBG, {y: 500}, 0.7, {
-							ease: FlxEase.quadInOut,
-							startDelay: 0.2
-						});
-						FlxTween.tween(greenImpostor, {y: 902.35}, 0.7, {
-							ease: FlxEase.quadInOut,
-							startDelay: 0.24
-						});
-						FlxTween.tween(redImpostor, {y: 906.65}, 0.7, {
-							ease: FlxEase.quadInOut,
-							startDelay: 0.3
-						});
-						FlxG.camera.fade(FlxColor.BLACK, 0.7, false);
-						FlxTween.tween(spr, {alpha: 0}, 1.3, {
-							ease: FlxEase.quadOut,
-							onComplete: function(twn:FlxTween)
-							{
-								spr.kill();
-							}
-						});
+							FlxTween.tween(starFG, {y: 500}, 0.7, {
+								ease: FlxEase.quadInOut
+							});
+							FlxTween.tween(starBG, {y: 500}, 0.7, {
+								ease: FlxEase.quadInOut,
+								startDelay: 0.2
+							});
+							FlxTween.tween(greenImpostor, {y: 902.35}, 0.7, {
+								ease: FlxEase.quadInOut,
+								startDelay: 0.24
+							});
+							FlxTween.tween(redImpostor, {y: 906.65}, 0.7, {
+								ease: FlxEase.quadInOut,
+								startDelay: 0.3
+							});
+							FlxG.camera.fade(FlxColor.BLACK, 0.7, false);
+							FlxTween.tween(spr, {alpha: 0}, 1.3, {
+								ease: FlxEase.quadOut,
+								onComplete: function(twn:FlxTween)
+								{
+									spr.kill();
+								}
+							});
 						};
 						{
 							var daChoice:String = optionShit[curSelected];

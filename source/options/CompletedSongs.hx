@@ -34,76 +34,36 @@ class CompletedSongs extends BaseOptionsMenu
 	public function new()
 	{
 		title = 'Completed Songs';
-		rpcTitle = 'Completed Songs Menu'; //for Discord Rich Presence
+		rpcTitle = 'Completed Songs Menu'; // for Discord Rich Presence
 
-		var option:Option = new Option('Christmas Song',
-			"Christmas",
-			'ChristmasSongComplete',
-			'bool',
-			false);
+		var option:Option = new Option('Christmas Song', "Christmas", 'ChristmasSongComplete', 'bool', false);
 		addOption(option);
 
-		var option:Option = new Option('Spookpostor Song',
-			"Spookpostor",
-			'SpookpostorSongComplete',
-			'bool',
-			false);
+		var option:Option = new Option('Spookpostor Song', "Spookpostor", 'SpookpostorSongComplete', 'bool', false);
 		addOption(option);
-		
-		var option:Option = new Option('Titular Song',
-			"Titular",
-			'TitularSongComplete',
-			'bool',
-			false);
+
+		var option:Option = new Option('Titular Song', "Titular", 'TitularSongComplete', 'bool', false);
 		addOption(option);
-		
-		var option:Option = new Option('Mission Song',
-			"Mission",
-			'MissionSongComplete',
-			'bool',
-			false);
+
+		var option:Option = new Option('Mission Song', "Mission", 'MissionSongComplete', 'bool', false);
 		addOption(option);
-		
-		var option:Option = new Option('DoubleTrouble Song',
-			"DoubleTrouble",
-			'DoubleTroubleSongComplete',
-			'bool',
-			false);
+
+		var option:Option = new Option('DoubleTrouble Song', "DoubleTrouble", 'DoubleTroubleSongComplete', 'bool', false);
 		addOption(option);
-		
-		var option:Option = new Option('DoubleEjection Song',
-			"DoubleEjection",
-			'DoubleEjectionSongComplete',
-			'bool',
-			false);
+
+		var option:Option = new Option('DoubleEjection Song', "DoubleEjection", 'DoubleEjectionSongComplete', 'bool', false);
 		addOption(option);
-		
-		var option:Option = new Option('Boing Song',
-			"Boing",
-			'BoingSongComplete',
-			'bool',
-			false);
+
+		var option:Option = new Option('Boing Song', "Boing", 'BoingSongComplete', 'bool', false);
 		addOption(option);
-		
-		var option:Option = new Option('DevilsGambit Song',
-			"DevilsGambit",
-			'DevilsGambitSongComplete',
-			'bool',
-			false);
+
+		var option:Option = new Option('DevilsGambit Song', "DevilsGambit", 'DevilsGambitSongComplete', 'bool', false);
 		addOption(option);
-		
-		var option:Option = new Option('BadTime Song',
-			"BadTime",
-			'BadTimeSongComplete',
-			'bool',
-			false);
+
+		var option:Option = new Option('BadTime Song', "BadTime", 'BadTimeSongComplete', 'bool', false);
 		addOption(option);
-		
-		var option:Option = new Option('Despair Song',
-			"Despair",
-			'DespairSongComplete',
-			'bool',
-			false);
+
+		var option:Option = new Option('Despair Song', "Despair", 'DespairSongComplete', 'bool', false);
 		addOption(option);
 		super();
 	}
