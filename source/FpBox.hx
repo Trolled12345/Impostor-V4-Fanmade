@@ -11,7 +11,7 @@ class FpBox extends FlxSprite
 	public var box:String = '';
 	public var SongNum:Float = 0;
 
-	public function new(SongNum:Float = 0, box:String = 'FreeplayBox')
+	public function new(SongNum:Float = 0, box:String = 'freeplaybox')
 	{
 		super();
 		changeBox(box);
