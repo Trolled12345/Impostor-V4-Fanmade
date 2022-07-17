@@ -1,5 +1,8 @@
 package;
 
+#if android
+import android.AndroidControls;
+#end
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
 import Controls.Control;
 import flixel.FlxG;
@@ -154,8 +157,24 @@ class SusSubState extends MusicBeatSubstate
 		timerTxt.font = Paths.font('metro.otf');
 		add(timerTxt);
 		timerTxt.text = Std.string(timer);
+
+		#if android
+		if (AndroidControls.getMode() != 5)
+		{
+			FlxG.stage.window.textInputEnabled = true;
+			if (!FlxG.stage.window.onTextInput.has(spookyTypeing))
+				FlxG.stage.window.onTextInput.add(spookyTypeing);
+		}
+		#end
 	}
 
+	function spookyTypeing(letter:String)
+	{
+		if (letter == realWord.charAt(position))
+			correctLetter();
+		else
+			FlxG.sound.play(Paths.sound('BUZZER', 'shared'));
+	}
 
 	function correctLetter() {
 		position++;
@@ -177,6 +196,8 @@ class SusSubState extends MusicBeatSubstate
 				i.alpha = 0;
 			}
 		}
+
+		#if !android
 		if (FlxG.keys.justPressed.ANY) {
 			if (realWord.charAt(position) == '?') {
 				if (FlxG.keys.justPressed.SLASH && FlxG.keys.pressed.SHIFT)
@@ -195,10 +216,29 @@ class SusSubState extends MusicBeatSubstate
 					FlxG.sound.play(Paths.sound('BUZZER', 'shared'));
 			}
 		}
-		/*if (FlxG.keys.justPressed.Z) {
-			close();
-			win();
-		}*/
+		#else
+		if (AndroidControls.getMode() == 5)
+		{
+			if (FlxG.keys.justPressed.ANY) {
+				if (realWord.charAt(position) == '?') {
+					if (FlxG.keys.justPressed.SLASH && FlxG.keys.pressed.SHIFT)
+						correctLetter();
+					else if (!FlxG.keys.justPressed.SHIFT)
+						FlxG.sound.play(Paths.sound('BUZZER', 'shared'));
+				} else if (realWord.charAt(position) == '!') {
+					if (FlxG.keys.justPressed.ONE && FlxG.keys.pressed.SHIFT)
+						correctLetter();
+					else if (!FlxG.keys.justPressed.SHIFT)
+						FlxG.sound.play(Paths.sound('BUZZER', 'shared'));
+				} else {
+					if (FlxG.keys.anyJustPressed([FlxKey.fromString(realWord.charAt(position))])) {
+						correctLetter();
+					} else
+						FlxG.sound.play(Paths.sound('BUZZER', 'shared'));
+				}
+			}
+		}
+		#end
 	}
 
 	override function beatHit()
@@ -216,6 +256,14 @@ class SusSubState extends MusicBeatSubstate
 
 	override public function close() {
 		FlxG.autoPause = true;
+		#if android
+		if (AndroidControls.getMode() != 5)
+		{
+			FlxG.stage.window.textInputEnabled = false;
+			if (FlxG.stage.window.onTextInput.has(spookyTypeing))
+				FlxG.stage.window.onTextInput.remove(spookyTypeing);
+		}
+		#end
 		super.close();
 	}
 }

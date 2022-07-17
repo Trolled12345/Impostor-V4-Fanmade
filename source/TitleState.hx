@@ -74,6 +74,10 @@ class TitleState extends MusicBeatState
 
 	override public function create():Void
 	{
+		#if android
+		FlxG.android.preventDefaultKeys = [BACK];
+		#end
+
 		Paths.clearStoredMemory();
 		Paths.clearUnusedMemory();
 
@@ -308,14 +312,10 @@ class TitleState extends MusicBeatState
 
 		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER || controls.ACCEPT;
 
-		#if mobile
+		#if android
 		for (touch in FlxG.touches.list)
-		{
 			if (touch.justPressed)
-			{
-				pressedEnter = true;
-			}
-		}
+				justPressed = true;
 		#end
 
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
