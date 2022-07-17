@@ -6,6 +6,7 @@ import android.flixel.FlxVirtualPad;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxSubState;
+import flixel.addons.display.FlxBackdrop;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxSpriteGroup;
@@ -39,10 +40,21 @@ class AndroidControlsSubState extends FlxSubState
 	{
 		curSelected = AndroidControls.getMode();
 
-		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
-		bg.alpha = 0.6;
+		var bg:FlxSprite = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		bg.scrollFactor.set();
 		add(bg);
+
+		var starFG:FlxBackdrop = new FlxBackdrop(Paths.image('menu/starFG'), 1, 1, true, true);
+		starFG.updateHitbox();
+		starFG.antialiasing = true;
+		starFG.scrollFactor.set();
+		add(starFG);
+
+		var starBG:FlxBackdrop = new FlxBackdrop(Paths.image('menu/starBG'), 1, 1, true, true);
+		starBG.updateHitbox();
+		starBG.antialiasing = true;
+		starBG.scrollFactor.set();
+		add(starBG);
 
 		resetButton = new FlxButton(FlxG.width - 200, 50, "Reset", function()
 		{
