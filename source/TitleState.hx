@@ -315,7 +315,7 @@ class TitleState extends MusicBeatState
 		#if android
 		for (touch in FlxG.touches.list)
 			if (touch.justPressed)
-				justPressed = true;
+				pressedEnter = true;
 		#end
 
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;

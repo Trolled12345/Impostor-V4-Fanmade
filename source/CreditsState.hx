@@ -163,6 +163,7 @@ class CreditsState extends MusicBeatState
 		bg.color = getCurrentBGColor();
 		intendedColor = bg.color;
 		changeSelection();
+
 		super.create();
 	}
 

@@ -992,6 +992,10 @@ class FreeplayState extends MusicBeatState
 		coolthing.updateHitbox();
 		add(coolthing);
 		
+		#if android
+		addVirtualPad(LEFT_FULL, A_B_C_X_Y);
+		#end
+
 		super.create();
 	}
 
@@ -1067,8 +1071,8 @@ class FreeplayState extends MusicBeatState
 		var upP = controls.UI_UP_P;
 		var downP = controls.UI_DOWN_P;
 		var accepted = controls.ACCEPT;
-		var space = FlxG.keys.justPressed.SPACE;
-		var ctrl = FlxG.keys.justPressed.CONTROL;
+		var space = FlxG.keys.justPressed.SPACE #if android || virtualPad.buttonX.justPressed #end;
+		var ctrl = FlxG.keys.justPressed.CONTROL #if android || virtualPad.buttonC.justPressed #end;
 
 		var shiftMult:Int = 1;
 		if(FlxG.keys.pressed.SHIFT) shiftMult = 3;
@@ -1118,6 +1122,9 @@ class FreeplayState extends MusicBeatState
 
 		if(ctrl)
 		{
+			#if android
+			removeVirtualPad();
+			#end
 			persistentUpdate = false;
 			openSubState(new GameplayChangersSubstate());
 		}
@@ -1146,7 +1153,6 @@ class FreeplayState extends MusicBeatState
 				#end
 			}
 		}
-
 		else if (accepted)
 		{
 			persistentUpdate = false;
@@ -1182,8 +1188,11 @@ class FreeplayState extends MusicBeatState
 					
 			destroyFreeplayVocals();
 		}
-		else if(controls.RESET)
+		else if(controls.RESET #if android || virtualPad.buttonY.justPressed #end)
 		{
+			#if android
+			removeVirtualPad();
+			#end
 			persistentUpdate = false;
 			openSubState(new ResetScoreSubState(songs[curSelected].songName, curDifficulty, songs[curSelected].songCharacter));
 			FlxG.sound.play(Paths.sound('scrollMenu'));
